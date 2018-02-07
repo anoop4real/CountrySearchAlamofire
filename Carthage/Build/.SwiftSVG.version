@@ -1,0 +1,24 @@
+{
+  "iOS" : [
+    {
+      "hash" : "9d67886e0bc9927e95e456d3e0922d3d54657c649a0aeddf19477afd5e7aa0cd",
+      "name" : "SwiftSVG"
+    }
+  ],
+  "commitish" : "v2.1.3",
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+    {
+      "hash" : "34e9fba4a5c29bd519059d862f6a48472740ab8c864df6396617a8a038b1bfca",
+      "name" : "SwiftSVG"
+    }
+  ],
+  "Mac" : [
+    {
+      "hash" : "05d813724e9c4ee77d01c53a1021c94e4964a0edfdea18aa232acd848adcc371",
+      "name" : "SwiftSVG"
+    }
+  ]
+}
