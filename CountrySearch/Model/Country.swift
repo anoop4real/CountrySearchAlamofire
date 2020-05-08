@@ -9,8 +9,6 @@
 import Foundation
 
 struct Country {
-
     var countryName: String
     var countryCode: String
-
 }

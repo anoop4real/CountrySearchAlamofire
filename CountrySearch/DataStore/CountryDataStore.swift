@@ -9,10 +9,9 @@
 import Foundation
 
 class CountryDataStore {
-
     fileprivate var isFilterApplied = false
     fileprivate var filteredArray = [Country]()
-    fileprivate var normalArray   = [Country]()
+    fileprivate var normalArray = [Country]()
 
     private var networkManager = NetworkDataManager()
     // Private Init
@@ -25,6 +24,7 @@ class CountryDataStore {
     private static let _shared = CountryDataStore()
 
     // MARK: - Accessors
+
     class func shared() -> CountryDataStore {
         return _shared
     }
@@ -32,7 +32,6 @@ class CountryDataStore {
     // Get the list of iso countries from NSLocale
     func preparedata() {
         for countryCode in NSLocale.isoCountryCodes {
-
             var countryName: String? = NSLocale().displayName(forKey: .countryCode, value: countryCode)
             if countryName == nil {
                 countryName = NSLocale(localeIdentifier: "en_US").displayName(forKey: .countryCode, value: countryCode)
@@ -40,37 +39,38 @@ class CountryDataStore {
             let simpleCountry = Country(countryName: countryName!, countryCode: countryCode.lowercased())
             normalArray.append(simpleCountry)
         }
-        normalArray = normalArray.sorted(by: {$0.countryName < $1.countryName})
+        normalArray = normalArray.sorted(by: { $0.countryName < $1.countryName })
     }
+
     // Apply the user filter
     func filterBy(keyWord: String) {
-
         if keyWord.isEmpty {
             setFilterWith(status: false)
             return
         }
-        filteredArray = normalArray.filter({$0.countryName.lowercased().contains(keyWord.lowercased())})
+        filteredArray = normalArray.filter({ $0.countryName.lowercased().contains(keyWord.lowercased()) })
         setFilterWith(status: true)
     }
+
     // If user is searching then set the filter flag
     func setFilterWith(status: Bool) {
         isFilterApplied = status
     }
+
     // Cancel the ongoing request if the user hits back before data loads.
     func cancelOnGoingRequest() {
-        //networkManager.cancelOnGoingTasks()
+        // networkManager.cancelOnGoingTasks()
     }
-    
-    func fetchDetailsOfCountryWith(code: String, completion:@escaping (_ data: CountryViewModel?, _ error: Error?) -> Void) -> Void {
 
-        NetworkDataManager.fetchDataForCountryWith(code) {[weak self] (status, anyData) in
+    func fetchDetailsOfCountryWith(code: String, completion: @escaping (_ data: CountryViewModel?, _ error: Error?) -> Void) {
+        NetworkDataManager.fetchDataForCountryWith(code) { [weak self] _, anyData in
             if let countryData = anyData {
                 let jsonDecoder = JSONDecoder()
                 do {
                     let responseModel = try jsonDecoder.decode(CountryData.self, from: countryData)
                     let vm = self?.createViewModelFrom(countryData: responseModel)
                     completion(vm, nil)
-                } catch let error {
+                } catch {
                     print(error.localizedDescription)
                     completion(nil, error)
                 }
@@ -81,21 +81,20 @@ class CountryDataStore {
             }
         }
     }
-    // From the JSON model, prepate the view model for display.
-    func createViewModelFrom(countryData: CountryData ) -> CountryViewModel? {
 
+    // From the JSON model, prepate the view model for display.
+    func createViewModelFrom(countryData: CountryData) -> CountryViewModel? {
         let vm = CountryViewModel(with: countryData)
         return vm
     }
 }
 
 extension CountryDataStore: DataStoreProtocol {
-
     func sectionCount() -> Int {
         return 1
     }
-    func rowsCountIn(section: Int) -> Int {
 
+    func rowsCountIn(section: Int) -> Int {
         var rowCount = 0
 
         if isFilterApplied {
@@ -105,8 +104,8 @@ extension CountryDataStore: DataStoreProtocol {
         }
         return rowCount
     }
-    func itemAt(row: Int) -> Country? {
 
+    func itemAt(row: Int) -> Country? {
         if isFilterApplied {
             return filteredArray[row]
         } else {

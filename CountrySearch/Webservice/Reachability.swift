@@ -10,8 +10,6 @@ import Foundation
 import SystemConfiguration
 
 final class Reachability {
-
-
     class var shared: Reachability {
         struct Static {
             static let instance: Reachability = Reachability()
@@ -48,6 +46,7 @@ final class Reachability {
             }
         })
     }
+
     private func ipv4Reachability() -> SCNetworkReachability? {
         var zeroAddress = sockaddr_in()
         zeroAddress.sin_len = UInt8(MemoryLayout<sockaddr_in>.size)

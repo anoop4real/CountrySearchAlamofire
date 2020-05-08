@@ -9,7 +9,6 @@
 import Foundation
 
 protocol DataStoreProtocol {
-
     associatedtype T
     func sectionCount() -> Int
     func rowsCountIn(section: Int) -> Int

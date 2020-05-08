@@ -6,11 +6,10 @@
 //  Copyright © 2018 anoopm. All rights reserved.
 //
 
-import Foundation
 import Alamofire
+import Foundation
 
-public enum APIRouter:URLRequestConvertible{
-    
+public enum APIRouter: URLRequestConvertible {
     static let baseURL = "https://restcountries.eu/rest/v2"
     
     case byName(String)
@@ -39,7 +38,6 @@ public enum APIRouter:URLRequestConvertible{
                 return "/\(code)"
             case .byName(let name):
                 return "/\(name)"
-                
             }
         }()
         let url = try APIRouter.baseURL.asURL()
@@ -49,5 +47,5 @@ public enum APIRouter:URLRequestConvertible{
         request.timeoutInterval = TimeInterval(10 * 1000)
         
         return try URLEncoding.default.encode(request, with: nil)
-    }   
+    }
 }
